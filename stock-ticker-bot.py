@@ -5,8 +5,6 @@ import requests
 from google.cloud import storage
 
 
-#det GET 'https://api.twitter.com/2/tweets/search/all?query=(covid%20OR%20coronavirus)&max_results=500' --header 'Authorization: Bearer $BEARER_TOKEN'
-
 def scrape():
     twitter_bearer_token = os.environ['TWITTER_BEARER_TOKEN']
     headers = {}
