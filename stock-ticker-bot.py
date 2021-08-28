@@ -1,17 +1,15 @@
-import twitter
 import os
-import requests
+import tweepy
 
 from google.cloud import storage
 
 
-def scrape():
-    twitter_bearer_token = os.environ['TWITTER_BEARER_TOKEN']
-    headers = {}
-    headers["Authorization"] = "Bearer " + twitter_bearer_token
-    r = requests.get("https://api.twitter.com/2/tweets/search/all?query=(GOOGL)&max_results=20", headers=headers)
-    print(r.text)
-
+def cashtag_scrape():
+    consumer_key = os.environ['TWITTER_CONSUMER_KEY']
+    consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
+    access_token = os.environ['TWITTER_ACCESS_TOKEN']
+    access_token_secret = os.environ['TWITTER_ACCESS_TOKEN_SECRET']
+    
 
 def main():
     scrape()
