@@ -12,7 +12,7 @@ def cashtag_scrape():
     
 
 def main():
-    scrape()
+    cashtag_scrape()
 
 
 if __name__ == "__main__":
