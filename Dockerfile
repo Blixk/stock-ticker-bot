@@ -4,7 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update  \
 	&& apt upgrade -yqq
 
-ENV TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
 WORKDIR /app
 COPY stock-ticker-bot.py .
 COPY requirements.txt .
