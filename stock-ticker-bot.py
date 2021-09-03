@@ -4,6 +4,7 @@ import tweepy
 from datetime import date, timedelta
 from google.cloud import storage
 
+
 # scrape cashtag for last day's tweets
 def cashtag_scrape():
     cashtag = os.environ['CASHTAG']
@@ -19,6 +20,7 @@ def cashtag_scrape():
     api = tweepy.API(auth_handler=auth)
     for raw_tweet in tweepy.Cursor(api.search, q=cashtag, lang="en", since=today-delta, until=today).items():
         pass # need to build model, so do nothing for now
+
 
 def write_tweets_to_storage():
     pass # WIP
