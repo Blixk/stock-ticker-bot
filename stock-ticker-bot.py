@@ -1,17 +1,21 @@
 import os
 import tweepy
 import logging
+import time
+import json
 # import argparse
 # not adding in arguments yet -- future state will let user select batch or
 # streaming tweet collection via cli arguments 
 
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 from google.cloud import storage
+
+
+cashtag = os.environ['CASHTAG']
 
 
 # scrape cashtag for last day's tweets
 def cashtag_scrape():
-    cashtag = os.environ['CASHTAG']
     consumer_key = os.environ['TWITTER_CONSUMER_KEY']
     consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
     today = date.today()
@@ -37,14 +41,25 @@ def cashtag_scrape():
         print(tweet_model)
         tweet_list.append(tweet_model)
     return tweet_list
+        
 
-def write_tweets_to_storage():
-    pass # WIP
-
+def write_tweets_to_storage(tweet_list):
+    gcp_credentials = os.environ['GCP_CREDENTIALS']
+    bucket_name = os.environ['GCP_BUCKET_NAME']
+    for tweet in tweet_list:
+        filename = str(time.time()) + '-' + cashtag.strip('\\$') + '-tweet.json'
+        client = storage.Client.from_service_account_json(gcp_credentials)
+        bucket = client.get_bucket(bucket_name)
+        blob = bucket.blob(filename)
+        with open(filename, 'w') as fp:
+            json.dump(tweet, fp, indent=4)
+        fp.close()
+        blob.upload_from_filename(filename)
+        os.remove(filename)
 
 def main():
-    cashtag_scrape()
-
+    tweets = cashtag_scrape()
+    write_tweets_to_storage(tweets)
 
 if __name__ == "__main__":
     main()
